@@ -1,0 +1,50 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+news
+{% endblock title %}
+
+{% block content %}
+<h1>Все новости</h1>
+<h3>{{ next_news|default_if_none:"Чуть позже сообщим о распродаже!" }}</h3>
+<hr>
+
+{% if post.categoryType == NW %}
+
+<table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Дата публикации</td>
+        <td>Превью</td>
+    </tr>
+    {% for news in post %}
+    <tr>
+        <td>{{ news.heading|censor }}</td>
+        <td>{{ news.time_in|date:'d M Y' }}</td>
+        <td>{{ news.text|truncatechars:20|censor }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% elif post.categoryType == AR %}
+
+<table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Дата публикации</td>
+        <td>Превью</td>
+    </tr>
+    {% for post in post %}
+    <tr>
+        <td>{{ post.heading|censor }}</td>
+        <td>{{ post.time_in|date:'d M Y' }}</td>
+        <td>{{ post.text|censor }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h2>Новостей нет!</h2>
+{% endif %}
+{% endblock content %}

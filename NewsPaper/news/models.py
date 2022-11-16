@@ -21,6 +21,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
+    objects = None
     name = models.CharField(max_length=64, unique=True)
 
 
@@ -37,7 +38,7 @@ class Post(models.Model):
                                     choices=CATEGORY_CHICES,
                                     default=ARTICLE)
     time_in = models.DateTimeField(auto_now_add=True)
-    PostCategory = models.ManyToManyField(Category, through='PostCategory')
+    PostCategory = models.ManyToManyField(Category, related_name='news', through='PostCategory')
     heading = models.CharField(max_length=128)
     text = models.TextField()
     reting_news = models.SmallIntegerField(default=0)
