@@ -2,49 +2,73 @@
 
 {% load custom_filters %}
 
+{% load custom_tags %}
+
 {% block title %}
 news
 {% endblock title %}
 
 {% block content %}
-<h1>Все новости</h1>
-<h3>{{ next_news|default_if_none:"Чуть позже сообщим о распродаже!" }}</h3>
-<hr>
+    <h1>Все новости</h1>
+    <form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти"/>
+    </form>
 
-{% if post.categoryType == NW %}
+    <h3>{{ next_news|default_if_none:"Чуть позже сообщим о распродаже!" }}</h3>
+    <hr>
 
-<table>
-    <tr>
-        <td>Заголовок</td>
-        <td>Дата публикации</td>
-        <td>Превью</td>
-    </tr>
-    {% for news in post %}
-    <tr>
-        <td>{{ news.heading|censor }}</td>
-        <td>{{ news.time_in|date:'d M Y' }}</td>
-        <td>{{ news.text|truncatechars:20|censor }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    {% if post.categoryType == "NW" %}
 
-{% elif post.categoryType == AR %}
+    <table>
+        <tr>
+            <td>Заголовок</td>
+            <td>Дата публикации</td>
+            <td>Превью</td>
+        </tr>
+        {% for news in post %}
+        <tr>
+            <td>{{ news.heading|censor }}</td>
+            <td>{{ news.time_in|date:'d M Y' }}</td>
+            <td>{{ news.text|truncatechars:20|censor }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-<table>
-    <tr>
-        <td>Заголовок</td>
-        <td>Дата публикации</td>
-        <td>Превью</td>
-    </tr>
-    {% for post in post %}
-    <tr>
-        <td>{{ post.heading|censor }}</td>
-        <td>{{ post.time_in|date:'d M Y' }}</td>
-        <td>{{ post.text|censor }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<h2>Новостей нет!</h2>
-{% endif %}
+    {% elif post.categoryType == "AR" %}
+
+    <table>
+        <tr>
+            <td>Заголовок</td>
+            <td>Дата публикации</td>
+            <td>Превью</td>
+        </tr>
+        {% for post in post %}
+        <tr>
+            <td>{{ post.heading|censor }}</td>
+            <td>{{ post.time_in|date:'d M Y' }}</td>
+            <td>{{ post.text|censor }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h2>Новостей нет!</h2>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>{% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
 {% endblock content %}

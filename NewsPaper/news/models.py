@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     reting_author = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.authorUser}'
 
     def update_reting(self):
         postRat = self.post_set.aggregate(postReting=Sum('reting_news'))
@@ -23,6 +27,9 @@ class Author(models.Model):
 class Category(models.Model):
     objects = None
     name = models.CharField(max_length=64, unique=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Post(models.Model):
@@ -54,10 +61,19 @@ class Post(models.Model):
         self.reting_news -= 1
         self.save()
 
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
+
+    def __str__(self):
+        return f'{self.text}'
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.category}'
 
 
 class Comment(models.Model):
@@ -74,3 +90,6 @@ class Comment(models.Model):
     def dislike(self):
         self.reting -= 1
         self.save()
+
+    def __str__(self):
+        return f'{self.text}'
