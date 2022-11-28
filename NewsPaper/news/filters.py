@@ -17,5 +17,8 @@ class PostFilter(FilterSet):
         fields = {
             'heading': ['icontains'],
             'PostCategory': ['icontains'],
-            'time_in': [ ]
+            'reting_news': [
+                'lt',
+                'gt',
+            ],
         }

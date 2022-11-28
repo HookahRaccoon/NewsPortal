@@ -11,14 +11,14 @@ news
 {% block content %}
     <h1>Все новости</h1>
     <form action="" method="get">
-    {{ filterset.form.as_p }}
-    <input type="submit" value="Найти"/>
+       {{ filterset.forms.as_p }}
+       <input type="submit" value="Найти" />
     </form>
 
     <h3>{{ next_news|default_if_none:"Чуть позже сообщим о распродаже!" }}</h3>
     <hr>
 
-    {% if post.categoryType == "NW" %}
+    {% if post.categoryType == NW %}
 
     <table>
         <tr>
@@ -35,7 +35,7 @@ news
         {% endfor %}
     </table>
 
-    {% elif post.categoryType == "AR" %}
+    {% elif post.categoryType == AR %}
 
     <table>
         <tr>
