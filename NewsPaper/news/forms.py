@@ -27,3 +27,5 @@ class NewsForm(forms.ModelForm):
                 "Заголовок не должен быть идентичен тексту."
             )
         return cleaned_data
+
+

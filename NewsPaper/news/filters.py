@@ -7,11 +7,12 @@ class PostFilter(FilterSet):
     time_post = DateTimeFilter(
         field_name='time_in',
         lookup_expr='gt',
-        widget = DateTimeInput(
+        widget=DateTimeInput(
             format='%Y-%m-%dT%H:%M',
             attrs={'type': 'datetime-local'},
         ),
     )
+
     class Meta:
         model = Post
         fields = {

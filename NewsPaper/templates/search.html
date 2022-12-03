@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block title %}
-News
+Search
 {% endblock title %}
 
 {% block content %}
@@ -9,6 +9,6 @@ News
 
    <form action="" method="get">
        {{ filterset.form.as_p }}
-       <input type="submit" value="Найти" />
+       <input type="submit" class="botton button_outline" value="Найти" />
    </form>
 {% endblock content %}

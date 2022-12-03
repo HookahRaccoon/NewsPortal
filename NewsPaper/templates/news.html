@@ -11,46 +11,61 @@ news
 {% block content %}
     <h1>Все новости</h1>
     <form action="" method="get">
-       {{ filterset.forms.as_p }}
-       <input type="submit" value="Найти" />
-    </form>
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти"/>
 
-    <h3>{{ next_news|default_if_none:"Чуть позже сообщим о распродаже!" }}</h3>
+    <h3>Количество новостей: {{post|length}}</h3>
     <hr>
 
+    {% if perms.news.add_news %}
+        <a href="{% url 'add_news' %}"> Добавить товар </a>
+        {% endif %}
+
     {% if post.categoryType == NW %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Превью</td>
 
-    <table>
-        <tr>
-            <td>Заголовок</td>
-            <td>Дата публикации</td>
-            <td>Превью</td>
-        </tr>
-        {% for news in post %}
-        <tr>
-            <td>{{ news.heading|censor }}</td>
-            <td>{{ news.time_in|date:'d M Y' }}</td>
-            <td>{{ news.text|truncatechars:20|censor }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+                {% if perms.news.change_news or perms.news.delete_news %}
+                {% endif %}
 
-    {% elif post.categoryType == AR %}
+            </tr>
+            {% for news in post %}
+            <tr>
+                <td>{{ news.heading|censor }}</td>
+                <td>{{ news.time_in|date:'d M Y' }}</td>
+                <td>{{ news.text|truncatechars:20|censor }}</td>
 
-    <table>
-        <tr>
-            <td>Заголовок</td>
-            <td>Дата публикации</td>
-            <td>Превью</td>
-        </tr>
-        {% for post in post %}
-        <tr>
-            <td>{{ post.heading|censor }}</td>
-            <td>{{ post.time_in|date:'d M Y' }}</td>
-            <td>{{ post.text|censor }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+                <td>
+                    {% if perms.news.change_news %}
+                    <a href="{% url 'news_update' pk=post.id %}"> Изменить </a>
+                    {% endif %}
+                    {% if perms.news.delete_news %}
+                    <a href="{% url 'news_delete' post.id %}">Удалить</a> �
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% elif post.categoryType == AR %}
+
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Превью</td>
+            </tr>
+            {% for post in post %}
+            <tr>
+                <td>{{ post.heading|censor }}</td>
+                <td>{{ post.time_in|date:'d M Y' }}</td>
+                <td>{{ post.text|censor }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     {% else %}
     <h2>Новостей нет!</h2>
     {% endif %}
