@@ -5,8 +5,8 @@ from .views import (PostDetail, NewsList, NewsFilter, NewsCreate, NewsDelete, Ne
 urlpatterns = [
     # pk — это первичный ключ товара, который будет выводиться у нас в шаблон
     # int — указывает на то, что принимаются только целочисленные значения
-    path('<int:pk>/', PostDetail.as_view()),
-    path('', NewsList.as_view()),
+    path('<int:pk>/', PostDetail.as_view(), name='post_list'),
+    path('', NewsList.as_view(), name='post_detail'),
     path('search/', NewsFilter.as_view(), name='news_filter'),
     path('create/', NewsCreate.as_view(), name='news_create'),
     path('<int:pk>/update/', NewsUpdate.as_view(), name='news_update'),

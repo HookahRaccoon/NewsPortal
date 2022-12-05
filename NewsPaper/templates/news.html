@@ -18,7 +18,7 @@ news
     <hr>
 
     {% if perms.news.add_news %}
-        <a href="{% url 'add_news' %}"> Добавить товар </a>
+        <a href="{% url 'news_create' %}"> Добавить товар </a>
         {% endif %}
 
     {% if post.categoryType == NW %}
@@ -40,10 +40,10 @@ news
 
                 <td>
                     {% if perms.news.change_news %}
-                    <a href="{% url 'news_update' pk=post.id %}"> Изменить </a>
+                    <a href="{% url 'news_update' pk=news.id %}"> Изменить </a>
                     {% endif %}
                     {% if perms.news.delete_news %}
-                    <a href="{% url 'news_delete' post.id %}">Удалить</a> �
+                    <a href="{% url 'news_delete' news.id %}">Удалить</a> �
                     {% endif %}
                 </td>
             </tr>

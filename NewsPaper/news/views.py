@@ -1,3 +1,4 @@
+from allauth.account.views import LoginView
 from django.urls import reverse_lazy
 from .models import Post
 from django.views.generic import (ListView, DetailView, CreateView, DeleteView)
@@ -49,7 +50,7 @@ class PostDetail(DetailView):
 
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
-    permission_required = ('news.add_news',)
+    permission_required = ('news.add_post',)
     raise_exception = True
     form_class = NewsForm
     model = Post
@@ -64,7 +65,7 @@ class NewsDelete(PermissionRequiredMixin, DeleteView):
 
 
 class NewsUpdate(PermissionRequiredMixin, ListView):
-    permission_required = ('news.change_post',)
+    permission_required = ('news.change_news',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -89,3 +90,6 @@ class PostUpdate(PermissionRequiredMixin, ListView):
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
+
+
+

@@ -5,7 +5,7 @@ from .models import Post
 
 
 class NewsForm(forms.ModelForm):
-    heading = forms.CharField(min_length=128)
+    heading = forms.CharField(max_length=128)
 
     class Meta:
         model = Post
