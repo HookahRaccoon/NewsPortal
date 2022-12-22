@@ -5,20 +5,18 @@
 {% load custom_tags %}
 
 {% block title %}
-news
+Новостной портал
 {% endblock title %}
 
 {% block content %}
-    <h1>Все новости</h1>
-    <form action="" method="get">
-    {{ filterset.form.as_p }}
-    <input type="submit" value="Найти"/>
+<h1 style="text-align: center;"><strong>Новостной портал</strong></h1>
 
-    <h3>Количество новостей: {{post|length}}</h3>
+<p style="text-align: center;"><strong>Количество:{{post|length}}</strong></p>
+
     <hr>
 
-    {% if perms.news.add_news %}
-        <a href="{% url 'news_create' %}"> Добавить товар </a>
+    {% if perms.news.add_post %}
+        <a href="{% url 'news_create' %} "><button type="button" class="btn btn-outline-dark"> Добавить новость </button></a>
         {% endif %}
 
     {% if post.categoryType == NW %}
@@ -32,58 +30,45 @@ news
                 {% endif %}
 
             </tr>
-            {% for news in post %}
-            <tr>
-                <td>{{ news.heading|censor }}</td>
-                <td>{{ news.time_in|date:'d M Y' }}</td>
-                <td>{{ news.text|truncatechars:20|censor }}</td>
+                {% for news in post %}
+                        <tr>
+                            <td style="text-align: justify;"><a href="{% url 'post_list' pk=news.id %}" >{{ news.heading|censor }}</a></td>
+                            <td style="text-align: left;">{{ news.time_in|date:'d M Y' }}</td>
+                            <td style="text-align: left;">{{ news.text|truncatechars:20|censor }}</td>
 
-                <td>
-                    {% if perms.news.change_news %}
-                    <a href="{% url 'news_update' pk=news.id %}"> Изменить </a>
-                    {% endif %}
-                    {% if perms.news.delete_news %}
-                    <a href="{% url 'news_delete' news.id %}">Удалить</a> �
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
+                            <td>
+                                {% if perms.news.change_news %}
+                                <a href="{% url 'news_update' pk=news.id %}"><button type="button" class="btn btn-outline-warning"> Изменить </button></a>
+                                {% endif %}
+                                {% if perms.news.delete_news %}
+                                <a href="{% url 'news_delete' news.id %}"><button type="button" class="btn btn-outline-danger">Удалить</button></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                {% endfor %}
         </table>
 
-        {% elif post.categoryType == AR %}
 
-        <table>
-            <tr>
-                <td>Заголовок</td>
-                <td>Дата публикации</td>
-                <td>Превью</td>
-            </tr>
-            {% for post in post %}
-            <tr>
-                <td>{{ post.heading|censor }}</td>
-                <td>{{ post.time_in|date:'d M Y' }}</td>
-                <td>{{ post.text|censor }}</td>
-            </tr>
-            {% endfor %}
         </table>
     {% else %}
     <h2>Новостей нет!</h2>
     {% endif %}
 
-    {% if page_obj.has_previous %}
-        <a href="?page=1">1</a>{% if page_obj.previous_page_number != 1 %}
-            ...
-            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
-        {% endif %}
-    {% endif %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" ><button class="btn btn-light" type="button">&laquo; начало</button></a>
+            <a href="?page={{ page_obj.previous_page_number }}"><button class="btn btn-light" type="button">назад</button></a>
+            {% endif %}
 
-    {{ page_obj.number }}
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
 
-    {% if page_obj.has_next %}
-        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.page_obj.next_page_number }}</a>
-        {% if paginator.num_pages != page_obj.next_page_number %}
-            ...
-            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
-        {% endif %}
-    {% endif %}
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"><button class="btn btn-light" type="button">вперед</button></a>
+            <a  href="?page={{ page_obj.paginator.num_pages }}"><button class="btn btn-light" type="button">конец &raquo;</button></a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock content %}

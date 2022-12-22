@@ -27,6 +27,7 @@ class Author(models.Model):
 class Category(models.Model):
     objects = None
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
         return f'{self.name}'
@@ -62,7 +63,7 @@ class Post(models.Model):
         self.save()
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
+        return reverse('post_list', args=[str(self.id)])
 
     def __str__(self):
         return f'{self.text}'
@@ -73,7 +74,7 @@ class PostCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.category}'
+        return f'{self.post.heading} | {self.category.name}'
 
 
 class Comment(models.Model):
