@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+import redis
+import os
 
 
 class NewsConfig(AppConfig):
@@ -7,3 +9,10 @@ class NewsConfig(AppConfig):
 
     def ready(self):
         import news.signals
+
+
+red = redis.Redis(
+    host=os.getenv('redis_localhost'),
+    port=os.getenv('redis_port'),
+    password=os.getenv('redis_password'),
+)

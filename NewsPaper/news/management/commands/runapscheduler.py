@@ -17,28 +17,28 @@ logger = logging.getLogger(__name__)
 
 
 # наша задача по выводу текста на экран
-def my_job():
-    # Ваша логика обработки заданий здесь...
-    today = datetime.now()
-    last_week = today - timedelta(days=7)
-    post = Post.objects.filter(time_in__gte=last_week)
-    categories = set(post.values_list('PostCategory__name', flat=True))
-    subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
-    html_content = render_to_string(
-        'daily_post.html',
-        {
-            'Link': settings.SITE_URL,
-            'posts': post,
-        }
-    )
-    msg = EmailMultiAlternatives(
-        subject='Стаьи за неделю',
-        body='',
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=subscribers,
-    )
-    msg.attach_alternative(html_content, 'text/html')
-    msg.send()
+# def my_job():
+#     # Ваша логика обработки заданий здесь...
+#     today = datetime.now()
+#     last_week = today - timedelta(days=7)
+#     post = Post.objects.filter(time_in__gte=last_week)
+#     categories = set(post.values_list('PostCategory__name', flat=True))
+#     subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
+#     html_content = render_to_string(
+#         'daily_post.html',
+#         {
+#             'Link': settings.SITE_URL,
+#             'posts': post,
+#         }
+#     )
+#     msg = EmailMultiAlternatives(
+#         subject='Стаьи за неделю',
+#         body='',
+#         from_email=settings.DEFAULT_FROM_EMAIL,
+#         to=subscribers,
+#     )
+#     msg.attach_alternative(html_content, 'text/html')
+#     msg.send()
 
 
 # функция, которая будет удалять неактуальные задачи
