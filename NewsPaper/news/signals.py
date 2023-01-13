@@ -7,9 +7,9 @@ from .tasks import send_notifications
 from news.models import PostCategory, Post
 
 
-@receiver(post_save, sender=Post)
-def notify_about_new_post(sender, instance, created, **kwargs):
-    if created and instance.__class__.__name__ == 'Post':
+@receiver(m2m_changed, sender=PostCategory)
+def notify_about_new_post(sender, instance, **kwargs):
+    if kwargs['action'] == 'post_add':
         categories = instance.PostCategory.all()
         subscribers: list[str] = []
         for category in categories:
